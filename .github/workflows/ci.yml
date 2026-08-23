@@ -35,10 +35,10 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
+  run: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+    pip install pytest
       - name: Run tests
         env:
           TEST_DATABASE_URL: postgresql://loguser:logpassword@localhost:5432/logs_test_db
