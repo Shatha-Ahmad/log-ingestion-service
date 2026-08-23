@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from app.main import app, get_db
 from app.database import Base
 from tests.test_database import test_engine, TestSessionLocal
+from datetime import datetime
 
 Base.metadata.drop_all(bind=test_engine)
 Base.metadata.create_all(bind=test_engine)
@@ -255,8 +256,9 @@ def test_filter_logs_by_start_time():
     data = response.json()
 
     for log in data:
-        assert log["timestamp"] >= "2026-08-22T19:00:00+03:00"
-
+      log_time = datetime.fromisoformat(log["timestamp"].replace("Z", "+00:00"))
+      start_time = datetime.fromisoformat("2026-08-22T19:00:00+03:00")
+      assert log_time >= start_time
 def test_filter_logs_by_end_time():
     response = client.get(
         "/logs",
